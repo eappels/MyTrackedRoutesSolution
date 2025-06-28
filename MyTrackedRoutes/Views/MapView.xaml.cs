@@ -1,15 +1,38 @@
-using Microsoft.Maui.Devices.Sensors;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Maui.Maps;
+using MyTrackedRoutes.Messages;
 using MyTrackedRoutes.ViewModels;
 
 namespace MyTrackedRoutes.Views;
 
 public partial class MapView : ContentPage
 {
-	public MapView()
+
+    private double zoomLevel = 100;
+
+    public MapView()
 	{
 		InitializeComponent();
-	}
+
+        WeakReferenceMessenger.Default.Register<LocationUpdateMessage>(this, (r, m) =>
+        {
+            if (MyMap != null && m.Value != null)
+            {
+                MyMap.MoveToRegion(MapSpan.FromCenterAndRadius(m.Value, Distance.FromMeters(zoomLevel)));
+            }
+        });
+
+        if (MyMap != null)
+        {
+            MyMap.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == "VisibleRegion")
+                {
+                    zoomLevel = MyMap.VisibleRegion.Radius.Meters;
+                }
+            };
+        }
+    }
 
     protected override async void OnAppearing()
     {
