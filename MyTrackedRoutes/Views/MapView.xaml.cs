@@ -37,6 +37,7 @@ public partial class MapView : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
         if (MyMap != null)
             MyMap.MapElements.Add(((MapViewModel)BindingContext).Track);
 
