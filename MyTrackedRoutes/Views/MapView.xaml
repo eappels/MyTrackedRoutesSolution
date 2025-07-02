@@ -11,6 +11,8 @@
                   ZIndex="0"/>
         <Button Text="Start"
                 Command="{Binding StartStopTrackingCommand}"
+                BackgroundColor="{Binding StartStopButtonColor}"
+                IsEnabled="{Binding StartStopButtonEnabed}"
                 Grid.Row="1"
                 Grid.RowSpan="1"
                 ZIndex="1"
